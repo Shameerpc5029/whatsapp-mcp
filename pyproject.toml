@@ -9,7 +9,7 @@ description = "WhatsApp Business API MCP Server for sending messages, images, vi
 readme = "README.md"
 requires-python = ">=3.10"
 authors = [
-    {name = "WhatsApp MCP Team"},
+    {name = "shameer pc"},
 ]
 keywords = ["mcp", "whatsapp", "api", "messaging", "claude"]
 classifiers = [
@@ -43,9 +43,8 @@ dev = [
 whatsapp-mcp = "whatsapp_mcp.server:main"
 
 [project.urls]
-Homepage = "https://github.com/your-org/whatsapp-mcp"
-Repository = "https://github.com/your-org/whatsapp-mcp"
-Issues = "https://github.com/your-org/whatsapp-mcp/issues"
+Homepage = "https://github.com/Shameerpc5029/"
+Repository = "https://github.com/Shameerpc5029/whatsapp-mcp"
 
 [tool.setuptools.packages.find]
 where = ["src"]
