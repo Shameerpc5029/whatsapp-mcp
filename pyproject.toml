@@ -1,0 +1,14 @@
+[project]
+name = "whatsapp-mcp"
+version = "0.1.0"
+description = "WhatsApp MCP Server for sending messages, images, videos, documents, and managing templates"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "mcp[cli]>=1.10.1",
+    "python-dotenv>=1.1.1",
+    "requests>=2.32.4",
+]
+
+[project.scripts]
+whatsapp-mcp = "server:mcp.run"
