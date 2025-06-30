@@ -27,12 +27,7 @@ A comprehensive Model Context Protocol (MCP) server for WhatsApp Business API in
 ```bash
 git clone <repository-url>
 cd whatsapp-mcp
-pip install -e .
-```
-
-### Option 2: From PyPI (when published)
-```bash
-pip install whatsapp-mcp
+uv sync
 ```
 
 ## ⚙️ Configuration
@@ -91,31 +86,14 @@ Add this configuration to your Claude Desktop config file:
 ### Linux
 `~/.config/Claude/claude_desktop_config.json`
 
-```json
-{
-  "mcpServers": {
-    "whatsapp": {
-      "command": "whatsapp-mcp",
-      "env": {
-        "NANGO_CONNECTION_ID": "your_nango_connection_id",
-        "NANGO_INTEGRATION_ID": "whatsapp-business",
-        "NANGO_BASE_URL": "https://api.nango.dev",
-        "NANGO_SECRET_KEY": "your_nango_secret_key"
-      }
-    }
-  }
-}
-```
 
-Alternatively, if running from source:
 
 ```json
 {
   "mcpServers": {
     "whatsapp": {
-      "command": "python",
-      "args": ["-m", "whatsapp_mcp.server"],
-      "cwd": "/path/to/whatsapp-mcp",
+      "command": "uvx",
+      "args": ["git+https://github.com/Shameerpc5029/whatsapp-mcp.git"],
       "env": {
         "NANGO_CONNECTION_ID": "your_nango_connection_id",
         "NANGO_INTEGRATION_ID": "whatsapp-business",
@@ -321,30 +299,6 @@ whatsapp-mcp/
 └── README.md               # This file
 ```
 
-## 🔧 Development
-
-### Setup Development Environment
-```bash
-git clone <repository-url>
-cd whatsapp-mcp
-pip install -e ".[dev]"
-```
-
-### Code Formatting
-```bash
-black src/
-isort src/
-```
-
-### Type Checking
-```bash
-mypy src/
-```
-
-### Testing
-```bash
-pytest
-```
 
 ## 📝 Usage Examples
 
