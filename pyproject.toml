@@ -1,14 +1,69 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "whatsapp-mcp"
 version = "0.1.0"
-description = "WhatsApp MCP Server for sending messages, images, videos, documents, and managing templates"
+description = "WhatsApp Business API MCP Server for sending messages, images, videos, documents, and managing templates"
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.10"
+authors = [
+    {name = "WhatsApp MCP Team"},
+]
+keywords = ["mcp", "whatsapp", "api", "messaging", "claude"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+
 dependencies = [
-    "mcp[cli]>=1.10.1",
-    "python-dotenv>=1.1.1",
-    "requests>=2.32.4",
+    "mcp[cli]>=1.0.0",
+    "python-dotenv>=1.0.0",
+    "requests>=2.25.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "black>=22.0.0",
+    "isort>=5.0.0",
+    "mypy>=1.0.0",
 ]
 
 [project.scripts]
-whatsapp-mcp = "server:mcp.run"
+whatsapp-mcp = "whatsapp_mcp.server:main"
+
+[project.urls]
+Homepage = "https://github.com/your-org/whatsapp-mcp"
+Repository = "https://github.com/your-org/whatsapp-mcp"
+Issues = "https://github.com/your-org/whatsapp-mcp/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["whatsapp_mcp*"]
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+[tool.black]
+line-length = 100
+target-version = ["py38"]
+
+[tool.isort]
+profile = "black"
+line_length = 100
+
+[tool.mypy]
+python_version = "3.8"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
