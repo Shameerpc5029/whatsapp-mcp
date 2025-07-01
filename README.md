@@ -27,7 +27,12 @@ A comprehensive Model Context Protocol (MCP) server for WhatsApp Business API in
 ```bash
 git clone <repository-url>
 cd whatsapp-mcp
-uv sync
+pip install -e .
+```
+
+### Option 2: From PyPI (when published)
+```bash
+pip install whatsapp-mcp
 ```
 
 ## ⚙️ Configuration
@@ -41,6 +46,26 @@ NANGO_CONNECTION_ID=your_nango_connection_id
 NANGO_INTEGRATION_ID=whatsapp-business
 NANGO_BASE_URL=https://api.nango.dev
 NANGO_SECRET_KEY=your_nango_secret_key
+
+# WhatsApp Business Configuration (Optional - can be set per call)
+WHATSAPP_PHONE_NUMBER_ID=your_whatsapp_phone_number_id
+WHATSAPP_BUSINESS_ACCOUNT_ID=your_whatsapp_business_account_id
+```
+
+### Configuration Benefits
+
+**Environment Variables**: Set your phone number ID and business account ID once in environment variables, then use them across all function calls without needing to specify them each time.
+
+**Flexibility**: You can still override the environment variables by passing explicit values to individual function calls when needed.
+
+**Simplicity**: For most use cases, you'll only need to set the environment variables once and then use simpler function calls:
+
+```python
+# Simple - uses environment variables
+send_text_message(to="+1234567890", message="Hello!")
+
+# Explicit - overrides environment variables  
+send_text_message(to="+1234567890", message="Hello!", phone_number_id="different_id")
 ```
 
 ### Getting Nango Credentials
@@ -86,8 +111,6 @@ Add this configuration to your Claude Desktop config file:
 ### Linux
 `~/.config/Claude/claude_desktop_config.json`
 
-
-
 ```json
 {
   "mcpServers": {
@@ -98,7 +121,9 @@ Add this configuration to your Claude Desktop config file:
         "NANGO_CONNECTION_ID": "your_nango_connection_id",
         "NANGO_INTEGRATION_ID": "whatsapp-business",
         "NANGO_BASE_URL": "https://api.nango.dev",
-        "NANGO_SECRET_KEY": "your_nango_secret_key"
+        "NANGO_SECRET_KEY": "your_nango_secret_key",
+        "WHATSAPP_PHONE_NUMBER_ID": "your_whatsapp_phone_number_id",
+        "WHATSAPP_BUSINESS_ACCOUNT_ID": "your_whatsapp_business_account_id"
       }
     }
   }
@@ -113,24 +138,29 @@ Add this configuration to your Claude Desktop config file:
 Send text messages or templates to WhatsApp users.
 
 **Parameters:**
-- `phone_number_id` (str): Your WhatsApp Business phone number ID
 - `to` (str): Recipient's phone number with country code
 - `message` (str, optional): Text message content
 - `template_name` (str, optional): Template name to use
 - `language_code` (str): Language code for templates (default: "en_US")
+- `phone_number_id` (str, optional): Your WhatsApp Business phone number ID (uses env var if not provided)
 
 **Example Usage:**
 ```python
-# Send text message
+# Send text message (using environment variable for phone_number_id)
 send_text_message(
-    phone_number_id="1234567890",
     to="+1234567890", 
     message="Hello! How can I help you today?"
 )
 
+# Send text message with explicit phone_number_id
+send_text_message(
+    to="+1234567890", 
+    message="Hello! How can I help you today?",
+    phone_number_id="1234567890"
+)
+
 # Send template message
 send_text_message(
-    phone_number_id="1234567890",
     to="+1234567890",
     template_name="welcome_message",
     language_code="en_US"
@@ -141,37 +171,37 @@ send_text_message(
 Send images with optional captions.
 
 **Parameters:**
-- `phone_number_id` (str): Your WhatsApp Business phone number ID
 - `to` (str): Recipient's phone number
 - `image_url` (str): Public URL of the image
 - `caption` (str, optional): Image caption
+- `phone_number_id` (str, optional): Your WhatsApp Business phone number ID (uses env var if not provided)
 
 #### `send_video_message`
 Send videos with optional captions.
 
 **Parameters:**
-- `phone_number_id` (str): Your WhatsApp Business phone number ID
 - `to` (str): Recipient's phone number
 - `video_url` (str): Public URL of the video
 - `caption` (str, optional): Video caption
+- `phone_number_id` (str, optional): Your WhatsApp Business phone number ID (uses env var if not provided)
 
 #### `send_document_message`
 Send documents like PDFs, Word files, etc.
 
 **Parameters:**
-- `phone_number_id` (str): Your WhatsApp Business phone number ID
 - `to` (str): Recipient's phone number
 - `document_url` (str): Public URL of the document
 - `caption` (str, optional): Document caption
 - `filename` (str, optional): Filename for the document
+- `phone_number_id` (str, optional): Your WhatsApp Business phone number ID (uses env var if not provided)
 
 #### `send_audio_message`
 Send audio files and voice messages.
 
 **Parameters:**
-- `phone_number_id` (str): Your WhatsApp Business phone number ID
 - `to` (str): Recipient's phone number
 - `audio_url` (str): Public URL of the audio file
+- `phone_number_id` (str, optional): Your WhatsApp Business phone number ID (uses env var if not provided)
 
 ### Interactive Tools
 
@@ -179,13 +209,13 @@ Send audio files and voice messages.
 Send interactive list messages with selectable options.
 
 **Parameters:**
-- `phone_number_id` (str): Your WhatsApp Business phone number ID
 - `to` (str): Recipient's phone number
 - `sections` (list): List of sections with options
 - `header_text` (str): Header text (default: "Available Options")
 - `body_text` (str): Body text
 - `footer_text` (str): Footer text
 - `button_text` (str): Button text (default: "Options")
+- `phone_number_id` (str, optional): Your WhatsApp Business phone number ID (uses env var if not provided)
 
 **Example Usage:**
 ```python
@@ -208,7 +238,6 @@ sections = [
 ]
 
 send_list_message(
-    phone_number_id="1234567890",
     to="+1234567890",
     sections=sections,
     body_text="How can we help you today?"
@@ -219,12 +248,12 @@ send_list_message(
 Send interactive messages with up to 3 buttons.
 
 **Parameters:**
-- `phone_number_id` (str): Your WhatsApp Business phone number ID
 - `to` (str): Recipient's phone number
 - `body_text` (str): Main message text
 - `buttons` (list): List of buttons (max 3)
 - `header_text` (str, optional): Header text
 - `footer_text` (str, optional): Footer text
+- `phone_number_id` (str, optional): Your WhatsApp Business phone number ID (uses env var if not provided)
 
 ### Template Tools
 
@@ -232,11 +261,11 @@ Send interactive messages with up to 3 buttons.
 Send approved template messages with dynamic parameters.
 
 **Parameters:**
-- `phone_number_id` (str): Your WhatsApp Business phone number ID
 - `to` (str): Recipient's phone number
 - `template_name` (str): Name of approved template
 - `parameters` (list, optional): List of parameters for template variables
 - `language` (str): Template language code (default: "en")
+- `phone_number_id` (str, optional): Your WhatsApp Business phone number ID (uses env var if not provided)
 
 **Example Usage:**
 ```python
@@ -246,7 +275,6 @@ parameters = [
 ]
 
 send_template_message(
-    phone_number_id="1234567890",
     to="+1234567890",
     template_name="appointment_reminder",
     parameters=parameters,
@@ -258,25 +286,25 @@ send_template_message(
 Check the approval status of a template.
 
 **Parameters:**
-- `business_account_id` (str): WhatsApp Business Account ID
 - `template_name` (str): Name of the template to check
+- `business_account_id` (str, optional): WhatsApp Business Account ID (uses env var if not provided)
 
 #### `list_templates`
 List all templates for your business account.
 
 **Parameters:**
-- `business_account_id` (str): WhatsApp Business Account ID
 - `status_filter` (str, optional): Filter by status (APPROVED, PENDING, REJECTED)
+- `business_account_id` (str, optional): WhatsApp Business Account ID (uses env var if not provided)
 
 #### `create_template`
 Create a new message template.
 
 **Parameters:**
-- `business_account_id` (str): WhatsApp Business Account ID
 - `template_name` (str): Name for the new template
 - `language` (str): Language code
 - `category` (str): Template category (MARKETING, UTILITY, AUTHENTICATION)
 - `components` (list): List of template components
+- `business_account_id` (str, optional): WhatsApp Business Account ID (uses env var if not provided)
 
 ## 📁 Project Structure
 
@@ -299,14 +327,37 @@ whatsapp-mcp/
 └── README.md               # This file
 ```
 
+## 🔧 Development
+
+### Setup Development Environment
+```bash
+git clone <repository-url>
+cd whatsapp-mcp
+pip install -e ".[dev]"
+```
+
+### Code Formatting
+```bash
+black src/
+isort src/
+```
+
+### Type Checking
+```bash
+mypy src/
+```
+
+### Testing
+```bash
+pytest
+```
 
 ## 📝 Usage Examples
 
 ### Basic Text Message
 ```python
-# Send a simple text message
+# Send a simple text message (using environment variables)
 result = send_text_message(
-    phone_number_id="1234567890",
     to="+1234567890",
     message="Hello! Welcome to our service."
 )
@@ -316,7 +367,6 @@ result = send_text_message(
 ```python
 # Send an image with caption
 result = send_image_message(
-    phone_number_id="1234567890",
     to="+1234567890", 
     image_url="https://example.com/image.jpg",
     caption="Check out our new product!"
@@ -345,7 +395,6 @@ sections = [
 ]
 
 result = send_list_message(
-    phone_number_id="1234567890",
     to="+1234567890",
     sections=sections,
     body_text="What service are you interested in?"
@@ -362,7 +411,6 @@ parameters = [
 ]
 
 result = send_template_message(
-    phone_number_id="1234567890",
     to="+1234567890",
     template_name="subscription_confirmation",
     parameters=parameters

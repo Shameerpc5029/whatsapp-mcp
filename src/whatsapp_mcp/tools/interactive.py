@@ -1,30 +1,30 @@
 """Interactive tools for WhatsApp MCP Server"""
 
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 from ..utils.client import WhatsAppClient
-from ..utils import validate_phone_number, log_message
+from ..utils import validate_phone_number, log_message, get_default_phone_number_id
 
 
 def send_list_message(
-    phone_number_id: str,
     to: str,
     sections: List[Dict[str, Any]],
     header_text: str = "Available Options",
     body_text: str = "Please select from the following options:",
     footer_text: str = "Select an option to proceed",
-    button_text: str = "Options"
+    button_text: str = "Options",
+    phone_number_id: Optional[str] = None,
 ) -> Dict[str, Any]:
     """
     Send an interactive list message via WhatsApp
     
     Args:
-        phone_number_id: WhatsApp Business phone number ID
         to: Recipient phone number
         sections: List of sections with options
         header_text: Header text for the message
         body_text: Body text for the message
         footer_text: Footer text for the message
         button_text: Button text for the list
+        phone_number_id: WhatsApp Business phone number ID (optional, uses env var if not provided)
         
     Example sections format:
     [
@@ -46,6 +46,8 @@ def send_list_message(
     ]
     """
     try:
+        if phone_number_id is None:
+            phone_number_id = get_default_phone_number_id()
         client = WhatsAppClient(phone_number_id)
         to_clean = validate_phone_number(to)
 
@@ -81,23 +83,23 @@ def send_list_message(
 
 
 def send_button_message(
-    phone_number_id: str,
     to: str,
     body_text: str,
     buttons: List[Dict[str, Any]],
     header_text: str = "",
-    footer_text: str = ""
+    footer_text: str = "",
+    phone_number_id: Optional[str] = None,
 ) -> Dict[str, Any]:
     """
     Send an interactive button message via WhatsApp
     
     Args:
-        phone_number_id: WhatsApp Business phone number ID
         to: Recipient phone number
         body_text: Main message text
         buttons: List of buttons (max 3)
         header_text: Optional header text
         footer_text: Optional footer text
+        phone_number_id: WhatsApp Business phone number ID (optional, uses env var if not provided)
         
     Example buttons format:
     [
@@ -118,6 +120,8 @@ def send_button_message(
     ]
     """
     try:
+        if phone_number_id is None:
+            phone_number_id = get_default_phone_number_id()
         client = WhatsAppClient(phone_number_id)
         to_clean = validate_phone_number(to)
 

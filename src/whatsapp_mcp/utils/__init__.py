@@ -106,6 +106,55 @@ def validate_phone_number(phone_number: str) -> str:
     return cleaned
 
 
+def format_whatsapp_response(response_data: Dict[str, Any], error: str = None) -> Dict[str, Any]:
+    """
+    Format WhatsApp API response consistently
+    
+    Args:
+        response_data: Response data from WhatsApp API
+        error: Error message if any
+        
+    Returns:
+        Formatted response dictionary
+    """
+    return {
+        "result": response_data if not error else None,
+        "error": error,
+        "success": error is None
+    }
+
+
+def get_default_phone_number_id() -> str:
+    """
+    Get default WhatsApp phone number ID from environment variables
+    
+    Returns:
+        Phone number ID string
+        
+    Raises:
+        ValueError: If phone number ID is not found in environment
+    """
+    phone_number_id = os.environ.get("WHATSAPP_PHONE_NUMBER_ID")
+    if not phone_number_id or phone_number_id == "your_whatsapp_phone_number_id":
+        raise ValueError("WHATSAPP_PHONE_NUMBER_ID environment variable is not set or still contains placeholder value")
+    return phone_number_id
+
+
+def get_default_business_account_id() -> str:
+    """
+    Get default WhatsApp business account ID from environment variables
+    
+    Returns:
+        Business account ID string
+        
+    Raises:
+        ValueError: If business account ID is not found in environment
+    """
+    business_account_id = os.environ.get("WHATSAPP_BUSINESS_ACCOUNT_ID")
+    if not business_account_id or business_account_id == "your_whatsapp_business_account_id":
+        raise ValueError("WHATSAPP_BUSINESS_ACCOUNT_ID environment variable is not set or still contains placeholder value")
+    return business_account_id
+
 
 def log_message(message: str, extra_data: Dict[str, Any] = None) -> None:
     """

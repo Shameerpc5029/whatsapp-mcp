@@ -1,28 +1,30 @@
 """Message tools for WhatsApp MCP Server"""
 
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 from ..utils.client import WhatsAppClient
-from ..utils import validate_phone_number, log_message
+from ..utils import validate_phone_number, log_message, get_default_phone_number_id
 
 
 def send_text_message(
-    phone_number_id: str,
     to: str,
     message: str = "",
     template_name: str = "",
     language_code: str = "en_US",
+    phone_number_id: Optional[str] = None,
 ) -> Dict[str, Any]:
     """
     Send a text message or template message via WhatsApp
     
     Args:
-        phone_number_id: WhatsApp Business phone number ID
         to: Recipient phone number
         message: Text message to send (optional if template_name is provided)
         template_name: Template name to use (optional if message is provided)
         language_code: Language code for template (default: en_US)
+        phone_number_id: WhatsApp Business phone number ID (optional, uses env var if not provided)
     """
     try:
+        if phone_number_id is None:
+            phone_number_id = get_default_phone_number_id()
         client = WhatsAppClient(phone_number_id)
         to_clean = validate_phone_number(to)
 
@@ -54,21 +56,23 @@ def send_text_message(
 
 
 def send_image_message(
-    phone_number_id: str,
     to: str,
     image_url: str,
     caption: str = "",
+    phone_number_id: Optional[str] = None,
 ) -> Dict[str, Any]:
     """
     Send an image message via WhatsApp
     
     Args:
-        phone_number_id: WhatsApp Business phone number ID
         to: Recipient phone number  
         image_url: URL of the image to send
         caption: Optional caption for the image
+        phone_number_id: WhatsApp Business phone number ID (optional, uses env var if not provided)
     """
     try:
+        if phone_number_id is None:
+            phone_number_id = get_default_phone_number_id()
         client = WhatsAppClient(phone_number_id)
         to_clean = validate_phone_number(to)
 
@@ -94,21 +98,23 @@ def send_image_message(
 
 
 def send_video_message(
-    phone_number_id: str,
     to: str,
     video_url: str,
     caption: str = "",
+    phone_number_id: Optional[str] = None,
 ) -> Dict[str, Any]:
     """
     Send a video message via WhatsApp
     
     Args:
-        phone_number_id: WhatsApp Business phone number ID
         to: Recipient phone number
         video_url: URL of the video to send
         caption: Optional caption for the video
+        phone_number_id: WhatsApp Business phone number ID (optional, uses env var if not provided)
     """
     try:
+        if phone_number_id is None:
+            phone_number_id = get_default_phone_number_id()
         client = WhatsAppClient(phone_number_id)
         to_clean = validate_phone_number(to)
 
@@ -134,23 +140,25 @@ def send_video_message(
 
 
 def send_document_message(
-    phone_number_id: str,
     to: str,
     document_url: str,
     caption: str = "",
     filename: str = "",
+    phone_number_id: Optional[str] = None,
 ) -> Dict[str, Any]:
     """
     Send a document message via WhatsApp
     
     Args:
-        phone_number_id: WhatsApp Business phone number ID
         to: Recipient phone number
         document_url: URL of the document to send
         caption: Optional caption for the document
         filename: Optional filename for the document
+        phone_number_id: WhatsApp Business phone number ID (optional, uses env var if not provided)
     """
     try:
+        if phone_number_id is None:
+            phone_number_id = get_default_phone_number_id()
         client = WhatsAppClient(phone_number_id)
         to_clean = validate_phone_number(to)
 
@@ -183,19 +191,21 @@ def send_document_message(
 
 
 def send_audio_message(
-    phone_number_id: str,
     to: str,
     audio_url: str,
+    phone_number_id: Optional[str] = None,
 ) -> Dict[str, Any]:
     """
     Send an audio/voice message via WhatsApp
     
     Args:
-        phone_number_id: WhatsApp Business phone number ID
         to: Recipient phone number
         audio_url: URL of the audio file to send
+        phone_number_id: WhatsApp Business phone number ID (optional, uses env var if not provided)
     """
     try:
+        if phone_number_id is None:
+            phone_number_id = get_default_phone_number_id()
         client = WhatsAppClient(phone_number_id)
         to_clean = validate_phone_number(to)
 

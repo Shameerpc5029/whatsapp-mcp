@@ -52,13 +52,13 @@ class WhatsAppMCPServer:
                     inputSchema={
                         "type": "object",
                         "properties": {
-                            "phone_number_id": {"type": "string", "description": "WhatsApp Business phone number ID"},
                             "to": {"type": "string", "description": "Recipient phone number with country code"},
                             "message": {"type": "string", "description": "Text message to send (optional if template_name is provided)"},
                             "template_name": {"type": "string", "description": "Template name to use (optional if message is provided)"},
-                            "language_code": {"type": "string", "default": "en_US", "description": "Language code for template"}
+                            "language_code": {"type": "string", "default": "en_US", "description": "Language code for template"},
+                            "phone_number_id": {"type": "string", "description": "WhatsApp Business phone number ID (optional, uses env var if not provided)"}
                         },
-                        "required": ["phone_number_id", "to"]
+                        "required": ["to"]
                     }
                 ),
                 Tool(
@@ -67,12 +67,12 @@ class WhatsAppMCPServer:
                     inputSchema={
                         "type": "object",
                         "properties": {
-                            "phone_number_id": {"type": "string", "description": "WhatsApp Business phone number ID"},
                             "to": {"type": "string", "description": "Recipient phone number with country code"},
                             "image_url": {"type": "string", "description": "Public URL of the image to send"},
-                            "caption": {"type": "string", "description": "Optional caption for the image"}
+                            "caption": {"type": "string", "description": "Optional caption for the image"},
+                            "phone_number_id": {"type": "string", "description": "WhatsApp Business phone number ID (optional, uses env var if not provided)"}
                         },
-                        "required": ["phone_number_id", "to", "image_url"]
+                        "required": ["to", "image_url"]
                     }
                 ),
                 Tool(
@@ -81,12 +81,12 @@ class WhatsAppMCPServer:
                     inputSchema={
                         "type": "object",
                         "properties": {
-                            "phone_number_id": {"type": "string", "description": "WhatsApp Business phone number ID"},
                             "to": {"type": "string", "description": "Recipient phone number with country code"},
                             "video_url": {"type": "string", "description": "Public URL of the video to send"},
-                            "caption": {"type": "string", "description": "Optional caption for the video"}
+                            "caption": {"type": "string", "description": "Optional caption for the video"},
+                            "phone_number_id": {"type": "string", "description": "WhatsApp Business phone number ID (optional, uses env var if not provided)"}
                         },
-                        "required": ["phone_number_id", "to", "video_url"]
+                        "required": ["to", "video_url"]
                     }
                 ),
                 Tool(
@@ -95,13 +95,13 @@ class WhatsAppMCPServer:
                     inputSchema={
                         "type": "object",
                         "properties": {
-                            "phone_number_id": {"type": "string", "description": "WhatsApp Business phone number ID"},
                             "to": {"type": "string", "description": "Recipient phone number with country code"},
                             "document_url": {"type": "string", "description": "Public URL of the document to send"},
                             "caption": {"type": "string", "description": "Optional caption for the document"},
-                            "filename": {"type": "string", "description": "Optional filename for the document"}
+                            "filename": {"type": "string", "description": "Optional filename for the document"},
+                            "phone_number_id": {"type": "string", "description": "WhatsApp Business phone number ID (optional, uses env var if not provided)"}
                         },
-                        "required": ["phone_number_id", "to", "document_url"]
+                        "required": ["to", "document_url"]
                     }
                 ),
                 Tool(
@@ -110,11 +110,11 @@ class WhatsAppMCPServer:
                     inputSchema={
                         "type": "object",
                         "properties": {
-                            "phone_number_id": {"type": "string", "description": "WhatsApp Business phone number ID"},
                             "to": {"type": "string", "description": "Recipient phone number with country code"},
-                            "audio_url": {"type": "string", "description": "Public URL of the audio file to send"}
+                            "audio_url": {"type": "string", "description": "Public URL of the audio file to send"},
+                            "phone_number_id": {"type": "string", "description": "WhatsApp Business phone number ID (optional, uses env var if not provided)"}
                         },
-                        "required": ["phone_number_id", "to", "audio_url"]
+                        "required": ["to", "audio_url"]
                     }
                 ),
                 
@@ -125,7 +125,6 @@ class WhatsAppMCPServer:
                     inputSchema={
                         "type": "object",
                         "properties": {
-                            "phone_number_id": {"type": "string", "description": "WhatsApp Business phone number ID"},
                             "to": {"type": "string", "description": "Recipient phone number with country code"},
                             "sections": {
                                 "type": "array",
@@ -151,9 +150,10 @@ class WhatsAppMCPServer:
                             "header_text": {"type": "string", "default": "Available Options", "description": "Header text for the message"},
                             "body_text": {"type": "string", "default": "Please select from the following options:", "description": "Body text for the message"},
                             "footer_text": {"type": "string", "default": "Select an option to proceed", "description": "Footer text for the message"},
-                            "button_text": {"type": "string", "default": "Options", "description": "Button text for the list"}
+                            "button_text": {"type": "string", "default": "Options", "description": "Button text for the list"},
+                            "phone_number_id": {"type": "string", "description": "WhatsApp Business phone number ID (optional, uses env var if not provided)"}
                         },
-                        "required": ["phone_number_id", "to", "sections"]
+                        "required": ["to", "sections"]
                     }
                 ),
                 Tool(
@@ -162,7 +162,6 @@ class WhatsAppMCPServer:
                     inputSchema={
                         "type": "object",
                         "properties": {
-                            "phone_number_id": {"type": "string", "description": "WhatsApp Business phone number ID"},
                             "to": {"type": "string", "description": "Recipient phone number with country code"},
                             "body_text": {"type": "string", "description": "Main message text"},
                             "buttons": {
@@ -184,9 +183,10 @@ class WhatsAppMCPServer:
                                 }
                             },
                             "header_text": {"type": "string", "description": "Optional header text"},
-                            "footer_text": {"type": "string", "description": "Optional footer text"}
+                            "footer_text": {"type": "string", "description": "Optional footer text"},
+                            "phone_number_id": {"type": "string", "description": "WhatsApp Business phone number ID (optional, uses env var if not provided)"}
                         },
-                        "required": ["phone_number_id", "to", "body_text", "buttons"]
+                        "required": ["to", "body_text", "buttons"]
                     }
                 ),
                 
@@ -197,7 +197,6 @@ class WhatsAppMCPServer:
                     inputSchema={
                         "type": "object",
                         "properties": {
-                            "phone_number_id": {"type": "string", "description": "WhatsApp Business phone number ID"},
                             "to": {"type": "string", "description": "Recipient phone number with country code"},
                             "template_name": {"type": "string", "description": "Name of the approved template"},
                             "parameters": {
@@ -211,9 +210,10 @@ class WhatsAppMCPServer:
                                     }
                                 }
                             },
-                            "language": {"type": "string", "default": "en", "description": "Template language code"}
+                            "language": {"type": "string", "default": "en", "description": "Template language code"},
+                            "phone_number_id": {"type": "string", "description": "WhatsApp Business phone number ID (optional, uses env var if not provided)"}
                         },
-                        "required": ["phone_number_id", "to", "template_name"]
+                        "required": ["to", "template_name"]
                     }
                 ),
                 Tool(
@@ -222,10 +222,10 @@ class WhatsAppMCPServer:
                     inputSchema={
                         "type": "object",
                         "properties": {
-                            "business_account_id": {"type": "string", "description": "WhatsApp Business Account ID"},
-                            "template_name": {"type": "string", "description": "Name of the template to check"}
+                            "template_name": {"type": "string", "description": "Name of the template to check"},
+                            "business_account_id": {"type": "string", "description": "WhatsApp Business Account ID (optional, uses env var if not provided)"}
                         },
-                        "required": ["business_account_id", "template_name"]
+                        "required": ["template_name"]
                     }
                 ),
                 Tool(
@@ -234,10 +234,10 @@ class WhatsAppMCPServer:
                     inputSchema={
                         "type": "object",
                         "properties": {
-                            "business_account_id": {"type": "string", "description": "WhatsApp Business Account ID"},
-                            "status_filter": {"type": "string", "description": "Optional status filter (APPROVED, PENDING, REJECTED)"}
+                            "status_filter": {"type": "string", "description": "Optional status filter (APPROVED, PENDING, REJECTED)"},
+                            "business_account_id": {"type": "string", "description": "WhatsApp Business Account ID (optional, uses env var if not provided)"}
                         },
-                        "required": ["business_account_id"]
+                        "required": []
                     }
                 ),
                 Tool(
@@ -246,7 +246,6 @@ class WhatsAppMCPServer:
                     inputSchema={
                         "type": "object",
                         "properties": {
-                            "business_account_id": {"type": "string", "description": "WhatsApp Business Account ID"},
                             "template_name": {"type": "string", "description": "Name for the new template"},
                             "language": {"type": "string", "description": "Language code for the template"},
                             "category": {"type": "string", "enum": ["MARKETING", "UTILITY", "AUTHENTICATION"], "description": "Template category"},
@@ -261,9 +260,10 @@ class WhatsAppMCPServer:
                                         "text": {"type": "string"}
                                     }
                                 }
-                            }
+                            },
+                            "business_account_id": {"type": "string", "description": "WhatsApp Business Account ID (optional, uses env var if not provided)"}
                         },
-                        "required": ["business_account_id", "template_name", "language", "category", "components"]
+                        "required": ["template_name", "language", "category", "components"]
                     }
                 )
             ]
@@ -345,6 +345,8 @@ def main():
         print("  NANGO_INTEGRATION_ID - Nango integration ID (usually 'whatsapp-business')")
         print("  NANGO_BASE_URL - Nango API base URL (usually 'https://api.nango.dev')")
         print("  NANGO_SECRET_KEY - Nango secret key for authentication")
+        print("  WHATSAPP_PHONE_NUMBER_ID - WhatsApp Business phone number ID (optional for individual calls)")
+        print("  WHATSAPP_BUSINESS_ACCOUNT_ID - WhatsApp Business Account ID (optional for template operations)")
         return
     
     # Create and run the server

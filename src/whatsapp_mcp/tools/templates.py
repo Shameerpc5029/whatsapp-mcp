@@ -1,9 +1,9 @@
 """Template tools for WhatsApp MCP Server"""
 
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 from enum import Enum
 from ..utils.client import WhatsAppClient, WhatsAppTemplateClient
-from ..utils import validate_phone_number, log_message
+from ..utils import validate_phone_number, log_message, get_default_phone_number_id, get_default_business_account_id
 
 
 class TemplateLanguage(Enum):
@@ -19,21 +19,21 @@ class TemplateLanguage(Enum):
 
 
 def send_template_message(
-    phone_number_id: str,
     to: str,
     template_name: str,
     parameters: List[Dict[str, str]] = None,
     language: str = "en",
+    phone_number_id: Optional[str] = None,
 ) -> Dict[str, Any]:
     """
     Send a template message with dynamic parameters via WhatsApp
     
     Args:
-        phone_number_id: WhatsApp Business phone number ID
         to: Recipient phone number with country code
         template_name: Name of the approved template
         parameters: List of template parameters (optional)
         language: Template language code (default: "en")
+        phone_number_id: WhatsApp Business phone number ID (optional, uses env var if not provided)
         
     Example parameters format:
     [
@@ -42,6 +42,8 @@ def send_template_message(
     ]
     """
     try:
+        if phone_number_id is None:
+            phone_number_id = get_default_phone_number_id()
         client = WhatsAppClient(phone_number_id)
         to_clean = validate_phone_number(to)
 
@@ -94,17 +96,19 @@ def send_template_message(
 
 
 def check_template_status(
-    business_account_id: str,
     template_name: str,
+    business_account_id: Optional[str] = None,
 ) -> Dict[str, Any]:
     """
     Check the approval status of a WhatsApp template
     
     Args:
-        business_account_id: WhatsApp Business Account ID
         template_name: Name of the template to check
+        business_account_id: WhatsApp Business Account ID (optional, uses env var if not provided)
     """
     try:
+        if business_account_id is None:
+            business_account_id = get_default_business_account_id()
         client = WhatsAppTemplateClient(business_account_id)
         
         log_message(f"Checking status for template: {template_name}")
@@ -132,17 +136,19 @@ def check_template_status(
 
 
 def list_templates(
-    business_account_id: str,
     status_filter: str = "",
+    business_account_id: Optional[str] = None,
 ) -> Dict[str, Any]:
     """
     List all templates for a WhatsApp Business Account
     
     Args:
-        business_account_id: WhatsApp Business Account ID
         status_filter: Optional status filter (APPROVED, PENDING, REJECTED)
+        business_account_id: WhatsApp Business Account ID (optional, uses env var if not provided)
     """
     try:
+        if business_account_id is None:
+            business_account_id = get_default_business_account_id()
         client = WhatsAppTemplateClient(business_account_id)
         
         log_message(f"Listing templates for business account: {business_account_id}")
@@ -171,21 +177,21 @@ def list_templates(
 
 
 def create_template(
-    business_account_id: str,
     template_name: str,
     language: str,
     category: str,
     components: List[Dict[str, Any]],
+    business_account_id: Optional[str] = None,
 ) -> Dict[str, Any]:
     """
     Create a new WhatsApp message template
     
     Args:
-        business_account_id: WhatsApp Business Account ID
         template_name: Name for the new template
         language: Language code for the template
         category: Template category (MARKETING, UTILITY, AUTHENTICATION)
         components: List of template components
+        business_account_id: WhatsApp Business Account ID (optional, uses env var if not provided)
         
     Example components format:
     [
@@ -205,6 +211,8 @@ def create_template(
     ]
     """
     try:
+        if business_account_id is None:
+            business_account_id = get_default_business_account_id()
         client = WhatsAppTemplateClient(business_account_id)
 
         # Validate category
