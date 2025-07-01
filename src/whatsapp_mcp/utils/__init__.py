@@ -106,23 +106,6 @@ def validate_phone_number(phone_number: str) -> str:
     return cleaned
 
 
-def format_whatsapp_response(response_data: Dict[str, Any], error: str = None) -> Dict[str, Any]:
-    """
-    Format WhatsApp API response consistently
-    
-    Args:
-        response_data: Response data from WhatsApp API
-        error: Error message if any
-        
-    Returns:
-        Formatted response dictionary
-    """
-    return {
-        "result": response_data if not error else None,
-        "error": error,
-        "success": error is None
-    }
-
 
 def log_message(message: str, extra_data: Dict[str, Any] = None) -> None:
     """
